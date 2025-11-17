@@ -27,6 +27,11 @@ def main(input_path: Path, out_dir: Path, scale: str):
         output_path = out_dir / relative_path.parent / f"{relative_path.stem}.mov"
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
+        # check if output file already exists
+        if output_path.exists():
+            print(f"Skipping existing file: {output_path}")
+            continue
+
         ffmpeg_cmd = (
             f'ffmpeg -i "{video_path}" -vf "scale={scale}" -threads 0 '
             f'-c:v prores_ks -profile:v 0 -qscale:v 12 -c:a pcm_s16le '
